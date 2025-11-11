@@ -1,8 +1,11 @@
 import React from 'react'
+import Header from '../_components/Header'
 
 function page() {
   return (
-    <div>Home</div>
+    <div className='overflow-hidden'>
+       Home
+    </div>
   )
 }
 
