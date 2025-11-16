@@ -3,12 +3,36 @@ import mongoose, { Schema } from "mongoose";
 
 interface folderProps extends Document {
   folderName: string;
-  filesInside: [mongoose.Types.ObjectId];
+  filesInside: {
+      fileType:
+        | "Coupon"
+        | "Address"
+        | "IDCard"
+        | "Note"
+        | "Subscription"
+        | "Card"
+        | "Loginfile";
+        fileId: mongoose.Types.ObjectId
+    }[]
+  foldersInside: mongoose.Types.ObjectId[];
   AddInHome: boolean;
 }
 const folderSchema = new Schema<folderProps>({
   folderName: { type: String, required: true },
-  filesInside: [{ type: mongoose.Types.ObjectId }],
+  filesInside: [
+    {
+      fileType: {
+        type: String,
+        required: true,
+        enum: ["Coupon", "Address", "IDCard", "Note", "Subscription", "Card", "Loginfile"],
+      },
+      fileId: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: "filesInside.fileType",
+      },
+    },
+  ],
+  foldersInside: [{ type: mongoose.Types.ObjectId, ref: "folders" }],
   AddInHome: { type: Boolean, default: false },
 });
 

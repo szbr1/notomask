@@ -7,7 +7,7 @@ export interface CardProps extends Document {
   cardNumber: string;
   cvv: string;
   exp: string;
-  NameOnCard: string;
+  nameOnCard: string;
   stickyNotes?: string;
   cardType?: "Visa" | "Master"
 }
@@ -34,11 +34,9 @@ const CardSchema = new Schema<CardProps>(
     },
     exp: {
       type: String,
-      required: true,
     },
-    NameOnCard: {
+    nameOnCard: {
       type: String,
-      required: true,
       trim: true,
     },
     cardType: {

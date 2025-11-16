@@ -8,6 +8,7 @@ export interface IDCardProps extends Document {
   fatherName: string;
   motherName: string;
   rDate: Date;
+  stickyNotes: string;
 }
 
 const IDCardSchema = new Schema<IDCardProps>(
@@ -39,6 +40,10 @@ const IDCardSchema = new Schema<IDCardProps>(
     rDate: {
       type: Date,
     },
+    stickyNotes: {
+      type: String
+    }
+
   },
   { timestamps: true }
 );

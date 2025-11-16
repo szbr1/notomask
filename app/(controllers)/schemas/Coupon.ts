@@ -26,9 +26,9 @@ const CouponSchema = new mongoose.Schema<CouponProps>({
 let Coupon: mongoose.Model<CouponProps>;
 
 if(mongoose.models.coupon){
-    Coupon = mongoose.models.coupon
+    Coupon = mongoose.models.Coupon
 }else{
-    Coupon = mongoose.model("coupon", CouponSchema)
+    Coupon = mongoose.model("Coupon", CouponSchema)
 }
 
 

@@ -1,6 +1,7 @@
+import Card from "@/app/(controllers)/schemas/Card";
+import Folder from "@/app/(controllers)/schemas/Folder";
 import { dbConnection } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import Card from "../../schemas/Card";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -12,7 +13,7 @@ export const POST = async (req: NextRequest) => {
       cardNumber,
       cvv,
       exp,
-      NameOnCard,
+      nameOnCard,
       stickyNotes,
       cardType,
     } = await req.json();
@@ -21,7 +22,15 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({
         success: false,
         message: "folder name is required",
-        status: 400,
+        status: 300,
+      });
+    }
+
+    if(!cardNumber || !cvv){
+      return NextResponse.json({
+        success: false,
+        message: "card number is required",
+        status: 300,
       });
     }
 
@@ -31,16 +40,21 @@ export const POST = async (req: NextRequest) => {
       cardNumber,
       cvv,
       exp,
-      NameOnCard,
+      nameOnCard,
       stickyNotes,
       cardType,
     });
-
+    const storeInFolder = await Folder.findByIdAndUpdate(
+      folder,
+      { $push: { filesInside: {fileType: "Card" , fileId: NewCardCreated._id} } },
+      { new: true }
+    );
     return NextResponse.json({
       success: true,
       status: 200,
       message: "New Card Created Successfully",
-      Data: NewCardCreated,
+      ActuallData: NewCardCreated,
+      FileStoreIn: storeInFolder,
     });
   } catch (error) {
     console.error(error);

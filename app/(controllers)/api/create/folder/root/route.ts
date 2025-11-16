@@ -1,6 +1,6 @@
+import Folder from "@/app/(controllers)/schemas/Folder";
 import { dbConnection } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import Folder from "../../schemas/Folder";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -17,14 +17,22 @@ export const POST = async (req: NextRequest) => {
     }
 
     const NewFolderCreated = await Folder.create({
-        AddInHome,
-        folderName
-    })
+      AddInHome,
+      folderName,
+    });
 
-   return NextResponse.json({success: true, status: 200, message: "New Folder Created Successfully", Data: NewFolderCreated})
-
+    return NextResponse.json({
+      success: true,
+      status: 200,
+      message: "New Folder Created Successfully",
+      Data: NewFolderCreated,
+    });
   } catch (error) {
-    console.error(error)
-   return NextResponse.json({success: false, status:501, message: "server is not working corretly"})
+    console.error(error);
+    return NextResponse.json({
+      success: false,
+      status: 501,
+      message: "server is not working corretly",
+    });
   }
 };

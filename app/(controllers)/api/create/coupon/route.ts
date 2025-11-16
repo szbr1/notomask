@@ -1,8 +1,8 @@
 import { dbConnection } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import LoginFile from "../../schemas/LoginFile";
-import Coupon from "../../schemas/Coupon";
+import Coupon from "@/app/(controllers)/schemas/Coupon";
+import Folder from "@/app/(controllers)/schemas/Folder";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -36,11 +36,19 @@ export const POST = async (req: NextRequest) => {
       worth,
       website,
     });
+
+    const storeInFolder = await Folder.findByIdAndUpdate(
+      folder,
+      { $push: { filesInside: newCoupon._id } },
+      { new: true }
+    );
+
     return NextResponse.json({
       success: true,
       status: 200,
       message: "Coupon created successfully",
-      data: newCoupon,
+      ActuallFile: newCoupon,
+      FolderInStored: storeInFolder,
     });
   } catch (error) {
     console.error(error);

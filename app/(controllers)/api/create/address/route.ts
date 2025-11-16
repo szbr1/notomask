@@ -1,6 +1,7 @@
+import Address from "@/app/(controllers)/schemas/Address";
+import Folder from "@/app/(controllers)/schemas/Folder";
 import { dbConnection } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import Address from "../../schemas/Address";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -15,6 +16,7 @@ export const POST = async (req: NextRequest) => {
       phone,
       closestLandmark,
       address,
+      stickyNotes,
     } = await req.json();
 
     if (!name || !folder || !address) {
@@ -34,13 +36,21 @@ export const POST = async (req: NextRequest) => {
       phone,
       closestLandmark,
       address,
+      stickyNotes,
     });
+
+    const storeInFolder = await Folder.findByIdAndUpdate(
+      folder,
+      { $push: { filesInside: NewAddressCreated._id } },
+      { new: true }
+    );
 
     return NextResponse.json({
       success: true,
       status: 200,
       message: "New Address Created Successfully",
-      Data: NewAddressCreated,
+      ActuallData: NewAddressCreated,
+      FileStoreIn: storeInFolder,
     });
   } catch (error) {
     console.error(error);

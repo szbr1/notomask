@@ -23,7 +23,7 @@ let LoginFile: mongoose.Model<LoginFileProps>;
 if (mongoose.models.loginfile) {
     LoginFile = mongoose.models.loginfile
 } else {
-    LoginFile = mongoose.model("loginfile", LoginFileSchema);
+    LoginFile = mongoose.model("Loginfile", LoginFileSchema);
 }
 
 export default LoginFile;

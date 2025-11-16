@@ -1,7 +1,8 @@
 import { dbConnection } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import Subscription from "../../schemas/Subscription";
 import bcrypt from "bcryptjs";
+import Subscription from "@/app/(controllers)/schemas/Subscription";
+import Folder from "@/app/(controllers)/schemas/Folder";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -13,6 +14,7 @@ export const POST = async (req: NextRequest) => {
       renewDate,
       totalCost,
       planDuration,
+      stickyNotes,
       username,
       password,
       store,
@@ -38,17 +40,25 @@ export const POST = async (req: NextRequest) => {
       renewDate,
       totalCost,
       planDuration,
+      stickyNotes,
       username,
       password: hashedPassword,
       store,
       pins,
     });
 
+    const storeInFolder = await Folder.findByIdAndUpdate(
+      folder,
+      { $push: { filesInside: newSubscription._id } },
+      { new: true }
+    );
+
     return NextResponse.json({
       success: true,
       status: 200,
       message: "New Subscription Created Successfully",
-      Data: newSubscription,
+      ActuallData: newSubscription,
+      FileStoreIn: storeInFolder,
     });
   } catch (error) {
     console.error(error);

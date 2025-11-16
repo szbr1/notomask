@@ -9,7 +9,8 @@ interface addressPorps extends Document {
     folder: Types.ObjectId
     phone?: number
     closestLandmark?: string
-    address: string
+    address: string,
+    stickyNotes: string
     
 }
 const addressSchema = new Schema<addressPorps>({
@@ -17,10 +18,11 @@ const addressSchema = new Schema<addressPorps>({
     country:{type: String},
     district:{type: String},
     name:{type: String, required:true},
-    folder: {type: mongoose.Schema.Types.ObjectId, ref: "folders"},
+    folder: {type: mongoose.Schema.Types.ObjectId,},
     phone: {type: Number},
     closestLandmark:{type: String},
-    address:{type: String, required:true}
+    address:{type: String, required:true},
+    stickyNotes:{type: String}
     
 }, {
     timestamps: true
